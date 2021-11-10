@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+</head>
+<body>
+    <style>
+        h1 {
+            text-align: center;
+            color: rgb(136, 82, 187);
+            font-family: avenir;
+        }
+
+        body {
+            background-color: #e0c3ee;
+            padding: 50px;
+            font-family: avenir;
+        }
+    </style>
+
+    <h1>
+        Food API
+    </h1>
+
+    <div id="info">
+    <b>Describe the API you selected and what it does:</b> 
+    <br>
+    The API I selected is for searching cocktail recipes. 
+    <br>
+    <br>
+    <b>Cite the website where you found it:</b> 
+    <br>
+    <a href="https://www.themealdb.com/api.php" target="_blank">https://www.themealdb.com/api.php</a> 
+    <br>
+    <br>
+    <b>Describe the options you used for the API request: </b>
+    <br>
+    I searched the food id, which is "i=52772"
+    <br>
+    <br>
+
+    <b>Two applications where this API would be helpful:</b>
+    <br>
+    1. A recipe website for general easy-to-make recipes.
+    <br>
+    2. A food information website that tells you about basic information of well-known dishes 
+    <br>
+
+    </div>
+    <br>
+
+
+    <p id="data">
+
+
+    </p>
+
+    <script language="javascript">
+
+        request = new XMLHttpRequest();
+        console.log("1 - request object created");
+        request.open("GET", "https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772", true);
+        console.log("2 - opened request file");
+        request.onreadystatechange = function() {
+				 
+                if (request.readyState == 4 && request.status == 200) {
+                    
+                    console.log("5 - response received");
+                    result = request.responseText;
+                    
+                    meal = JSON.parse(result);
+                     
+                    document.getElementById("data").innerHTML = print(meal["meals"][0]); 
+                }
+                else if (request.readyState == 4 && request.status != 200) {
+ 
+                    document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+ 
+                }
+ 
+                else if (request.readyState == 3) {
+ 
+                    document.getElementById("data").innerHTML = "Too soon! Try again";
+ 
+                }
+ 
+            }
+             		
+			request.send();
+			console.log("4 - Request sent");
+		
+
+            function print(meal) {
+            result = "<div><b>Meal Name: </b>" + meal["strMeal"] + "</div>"
+            result += "<div><b> Main Ingredience: </b>" + meal["strCategory"] + "</div>";
+            result += "<div><b> Style: </b>" + meal["strArea"] + "</div>";
+            result += "<div><b> Recipe: </b>" + meal["strInstructions"] + "</div>";
+
+            return result;
+        }
+
+    </script>
+    
+</body>
+</html>
